@@ -1,0 +1,25 @@
+Przyg:
+w KAŻDYM pliku .c (korzystającym z malloców itd) należy dodać:
+#include "malloc_test.h"
+PO wszystkich innych includach, ale przed kodem. Pomocniczo:
+```bash
+for f in path/*.c; do ./add_remove_include.py $f add; done
+for f in path/*.c; do ./add_remove_include.py $f remove; done
+```
+
+To nadpisze malloca i main, pod warunkiem, że są w plikach .c (a nie .h) i main nie przyjmuje argumentów.
+Jeśli przyjmuje trzeba zmienić na własną potrzebę pliki malloc_test.{c,h}.
+
+Działanie:
+Po skompilowaniu program będzie wczytywał pierwszy z parametrów jako numer i dana alokacja z kolei się nie powiedzie,
+w drugim argumencie może być "--fail-all-after" wtedy wszystkie kolejne też się nie powiodą.
+Mimo to poprawne rozwiązanie powinno zwracać kod 0.
+Dodatkowo natrafienie na podmienioną alokacją wypisze odpowiednią wiadomość na stderr.
+
+Skrypt:
+Można przetestować skryptem mem_check.sh czy program nie narusza pamięci.
+Wtedy w katalogu z którego testujemy musi wejście memory.in.
+Jeśli program coś źle robi to będzie wypisany odpowiedni komentarz.
+
+Jeśli na koniec pisze że "in 0 tests mock alloc was not reached"
+to należy zwiększyć $tests_number w skrypcie.
